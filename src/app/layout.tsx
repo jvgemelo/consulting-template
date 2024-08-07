@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { ChakraProvider } from "@chakra-ui/react";
+import SideNav from "@/components/sidenav";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +18,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body>
+        <ChakraProvider>
+          <div style={{ display: 'flex', minHeight: 'screen' }}>
+            <SideNav />
+            <main style={{ flex: 1 }}>
+              {children}
+            </main>
+          </div>
+        </ChakraProvider>
+      </body>
     </html>
   );
 }
