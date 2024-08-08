@@ -1,0 +1,165 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+}
+
+model Organization {
+  id          Int      @id @default(autoincrement())
+  clerkOrgId  String   @unique
+  createdById Int?
+  name        String
+  licence     String
+  createdAt   DateTime @default(now()) @db.Timestamptz()
+  updatedAt   DateTime @updatedAt @db.Timestamptz()
+  createdBy   User?    @relation("Organization_createdByIdToUser", fields: [createdById], references: [id])
+  users       User[]   @relation("User_orgIdToOrganization")
+
+  @@index([id])
+  @@index([createdById])
+  @@index([clerkOrgId])
+}
+
+model User {
+  id                   Int            @id @default(autoincrement())
+  clerkId              String         @unique
+  orgId                Int?
+  email                String         @unique
+  name                 String
+  lastname             String
+  createdAt            DateTime       @default(now()) @db.Timestamptz()
+  updatedAt            DateTime       @updatedAt @db.Timestamptz()
+  organizationsCreated Organization[] @relation("Organization_createdByIdToUser")
+  organization         Organization?  @relation("User_orgIdToOrganization", fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@index([id])
+  @@index([orgId])
+  @@index([clerkId])
+}
+
+model Camera {
+  id        Int      @id @default(autoincrement())
+  name      String
+  rtspPath  String
+  createdAt DateTime @default(now()) @db.Timestamptz()
+  updatedAt DateTime @updatedAt @db.Timestamptz()
+  zones     Zone[]   @relation("cameraIdToCamera")
+  events    Event[]  @relation("eventToCamera")
+  objects   Object[] @relation("objectToCamera")
+
+  @@index([id])
+  @@index([name])
+}
+
+model Zone {
+  id          Int      @id @default(autoincrement())
+  cameraId    Int
+  name        String
+  description String
+  area        Json
+  createdAt   DateTime @default(now()) @db.Timestamptz()
+  updatedAt   DateTime @updatedAt @db.Timestamptz()
+  camera      Camera   @relation("cameraIdToCamera", fields: [cameraId], references: [id], onDelete: Cascade)
+  events      Event[]  @relation("eventToZone")
+
+  @@index([id])
+  @@index([cameraId])
+  @@index([name])
+}
+
+model EventType {
+  id          Int      @id @default(autoincrement())
+  name        String
+  level       String
+  type        String
+  subtype     String
+  persistency Int
+  createdAt   DateTime @default(now()) @db.Timestamptz()
+  updatedAt   DateTime @updatedAt @db.Timestamptz()
+  events      Event[]  @relation("eventToEventType")
+
+  @@index([id])
+  @@index([name])
+  @@index([level])
+}
+
+model Event {
+  id          Int       @id @default(autoincrement())
+  eventTypeId Int
+  cameraId    Int
+  zoneId      Int?
+  notified    Boolean   @default(false)
+  startedAt   DateTime  @db.Timestamptz()
+  endedAt     DateTime  @db.Timestamptz()
+  createdAt   DateTime  @default(now()) @db.Timestamptz()
+  updatedAt   DateTime  @updatedAt @db.Timestamptz()
+  eventType   EventType @relation("eventToEventType", fields: [eventTypeId], references: [id], onDelete: Cascade)
+  camera      Camera    @relation("eventToCamera", fields: [cameraId], references: [id], onDelete: Cascade)
+  zone        Zone?     @relation("eventToZone", fields: [zoneId], references: [id], onDelete: Cascade)
+  objects     Object[]
+  image       Image?
+
+  @@index([id])
+  @@index([eventTypeId])
+  @@index([cameraId])
+  @@index([zoneId])
+  @@index([notified])
+  @@index([startedAt])
+  @@index([endedAt])
+}
+
+model Object {
+  id              String      @id @db.Uuid
+  cameraId        Int
+  name            String
+  firstAppearance DateTime    @db.Timestamptz()
+  lastAppearance  DateTime    @db.Timestamptz()
+  createdAt       DateTime    @default(now()) @db.Timestamptz()
+  updatedAt       DateTime    @updatedAt @db.Timestamptz()
+  camera          Camera      @relation("objectToCamera", fields: [cameraId], references: [id], onDelete: Cascade)
+  events          Event[]
+  detections      Detection[] @relation("detectionToObject")
+
+  @@index([id])
+  @@index([cameraId])
+  @@index([name])
+}
+
+model Detection {
+  id         Int      @id @default(autoincrement())
+  objectId   String   @db.Uuid
+  x          Float
+  y          Float
+  w          Float
+  h          Float
+  confidence Float
+  keypoints  Json?
+  posture    String?
+  timestamp  DateTime @db.Timestamptz()
+  createdAt  DateTime @default(now()) @db.Timestamptz()
+  updatedAt  DateTime @updatedAt @db.Timestamptz()
+  object     Object   @relation("detectionToObject", fields: [objectId], references: [id], onDelete: Cascade)
+
+  @@index([id])
+  @@index([objectId])
+}
+
+model Image {
+  id         Int      @id @default(autoincrement())
+  eventId    Int      @unique
+  url        String
+  detections Json
+  createdAt  DateTime @default(now()) @db.Timestamptz()
+  updatedAt  DateTime @updatedAt @db.Timestamptz()
+
+  event Event @relation(fields: [eventId], onDelete: Cascade, references: [id])
+
+  @@index([id])
+  @@index([eventId])
+}

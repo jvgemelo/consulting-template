@@ -1,4 +1,5 @@
-import { Box, Divider, Heading } from '@chakra-ui/react';
+import { ProfileForm } from '@/components/ProfileForm';
+import { Box, Divider, FormControl, Heading, Input } from '@chakra-ui/react';
 
 export default function ViewPage() {
   return (
@@ -6,6 +7,7 @@ export default function ViewPage() {
       <Heading>View</Heading>
       <Divider className='m-4'/>
       <p>This is the view page.</p>
+      <ProfileForm/>
     </Box>
   );
 }

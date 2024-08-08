@@ -1,5 +1,9 @@
+
 import { Box, Divider, Heading, Select } from '@chakra-ui/react';
-import StackedBarChart from '@/components/ui/StackedBarChart'
+import StackedBarChart from '@/components/StackedBarChart'
+import TwoLevelPieChart from '@/components/TwoLevelPieChart';
+import { Suspense } from 'react';
+import { RevenueChartSkeleton } from '@/components/skeletons';
 
 export default function StadisticsPage() {
   return (
@@ -12,7 +16,15 @@ export default function StadisticsPage() {
         <option value='option3'>Option 3</option>
       </Select>
       <Divider className='m-4' />
-      <StackedBarChart/>
+      <h1 className='text-2xl m-2'>Detections</h1>
+      <div className='flex flex-row'>
+      {/* Suspense envuelve a un componente que utiliza funciones
+       asincronas que dependen de recuros que tardan en cargasrse*/ }
+      <Suspense fallback={<RevenueChartSkeleton/>}>
+       <StackedBarChart/>
+        </Suspense>
+      <TwoLevelPieChart/>
+      </div>
     </Box>
   );
 }

@@ -3,6 +3,7 @@
 import { Box, Flex, Icon, Link, Text, VStack, Spacer } from '@chakra-ui/react';
 import { FiHome, FiUser, FiSettings, FiLogOut, FiFileText, FiEye, FiBook, FiBarChart } from 'react-icons/fi';
 import { useRouter } from 'next/navigation';
+import { useCallback } from 'react';
 
 const SideNav = () => {
   const router = useRouter();
@@ -14,6 +15,12 @@ const SideNav = () => {
     { name: 'Documentation', icon: FiBook, path: '/documentation' },
     { name: 'Settings', icon: FiSettings, path: '/settings' },
   ];
+
+  const handleNavigation = useCallback((path) => {
+    if (router.pathname !== path) {
+      router.push(path);
+    }
+  }, [router]);
 
   const handleLogout = () => {
     // Implementa tu lógica de logout aquí
@@ -33,7 +40,8 @@ const SideNav = () => {
         {menuItems.map((item) => (
           <Link
             key={item.name}
-            href={item.path}
+            as="button"
+            onClick={() => handleNavigation(item.path)}
             _hover={{ textDecor: 'none', bg: 'gray.100' }}
             p={3}
             borderRadius="md"
@@ -47,8 +55,8 @@ const SideNav = () => {
         <Box className=' w-full h-full rounded-3xl border-2 '></Box>
         <Spacer />
         <Box>
-          <Link
-            href="#"
+          <Box
+            as="button"
             onClick={handleLogout}
             _hover={{ textDecor: 'none', bg: 'gray.100' }}
             p={3}
@@ -58,7 +66,7 @@ const SideNav = () => {
           >
             <Icon as={FiLogOut} boxSize={6} mr={3} />
             <Text fontSize="medium">Logout</Text>
-          </Link>
+          </Box>
         </Box>
       </VStack>
     </Flex>
