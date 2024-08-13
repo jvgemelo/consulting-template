@@ -8,7 +8,7 @@ export default function DocumentationPage() {
   useEffect(() => {
     // Llamar a la API para obtener los datos de las cámaras
     const fetchCameras = async () => {
-      const response = await fetch('/api/cameras');
+      const response = await fetch('/api/camera');
       const data = await response.json();
       setCameras(data);
       setLoading(false);
@@ -24,7 +24,7 @@ export default function DocumentationPage() {
       <h1>Lista de Cámaras</h1>
       <ul>
         {cameras.map((camera) => (
-          <li key={camera.id}>{camera.name} - {camera.url}</li>
+          <li key={camera.id}>Nombre de camara: {camera.name} <br/> Camara Url:  {camera.url}</li>
         ))}
       </ul>
     </div>
