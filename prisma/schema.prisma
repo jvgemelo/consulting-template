@@ -1,165 +1,155 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
-model Organization {
-  id          Int      @id @default(autoincrement())
-  clerkOrgId  String   @unique
-  createdById Int?
-  name        String
-  licence     String
-  createdAt   DateTime @default(now()) @db.Timestamptz()
-  updatedAt   DateTime @updatedAt @db.Timestamptz()
-  createdBy   User?    @relation("Organization_createdByIdToUser", fields: [createdById], references: [id])
-  users       User[]   @relation("User_orgIdToOrganization")
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model area_point {
+  area_id  Int
+  ord      Int
+  x        Float
+  y        Float
+  img_area img_area @relation(fields: [area_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
-  @@index([id])
-  @@index([createdById])
-  @@index([clerkOrgId])
+  @@id([area_id, ord])
+  @@unique([area_id, x, y], map: "unique_point")
 }
 
-model User {
-  id                   Int            @id @default(autoincrement())
-  clerkId              String         @unique
-  orgId                Int?
-  email                String         @unique
-  name                 String
-  lastname             String
-  createdAt            DateTime       @default(now()) @db.Timestamptz()
-  updatedAt            DateTime       @updatedAt @db.Timestamptz()
-  organizationsCreated Organization[] @relation("Organization_createdByIdToUser")
-  organization         Organization?  @relation("User_orgIdToOrganization", fields: [orgId], references: [id], onDelete: Cascade)
-
-  @@index([id])
-  @@index([orgId])
-  @@index([clerkId])
+model camera {
+  id           String      @id @db.VarChar
+  url          String      @unique @db.VarChar
+  name         String      @unique @db.VarChar
+  refresh_time Float
+  backup_time  Float
+  zone_id      Int
+  zone         zone        @relation(fields: [zone_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  frame        frame[]
+  model_cfg    model_cfg[]
 }
 
-model Camera {
-  id        Int      @id @default(autoincrement())
-  name      String
-  rtspPath  String
-  createdAt DateTime @default(now()) @db.Timestamptz()
-  updatedAt DateTime @updatedAt @db.Timestamptz()
-  zones     Zone[]   @relation("cameraIdToCamera")
-  events    Event[]  @relation("eventToCamera")
-  objects   Object[] @relation("objectToCamera")
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model count {
+  total     Int
+  object    String    @db.VarChar
+  timestamp DateTime  @default(now()) @db.Timestamptz(6)
+  camera_id String    @db.VarChar
+  model_id  String    @db.VarChar
+  // model_cfg model_cfg @relation(fields: [camera_id, model_id], references: [camera_id, model_id], onDelete: NoAction, onUpdate: NoAction)
 
-  @@index([id])
-  @@index([name])
+  @@ignore
 }
 
-model Zone {
-  id          Int      @id @default(autoincrement())
-  cameraId    Int
-  name        String
-  description String
-  area        Json
-  createdAt   DateTime @default(now()) @db.Timestamptz()
-  updatedAt   DateTime @updatedAt @db.Timestamptz()
-  camera      Camera   @relation("cameraIdToCamera", fields: [cameraId], references: [id], onDelete: Cascade)
-  events      Event[]  @relation("eventToZone")
-
-  @@index([id])
-  @@index([cameraId])
-  @@index([name])
-}
-
-model EventType {
-  id          Int      @id @default(autoincrement())
-  name        String
-  level       String
-  type        String
-  subtype     String
-  persistency Int
-  createdAt   DateTime @default(now()) @db.Timestamptz()
-  updatedAt   DateTime @updatedAt @db.Timestamptz()
-  events      Event[]  @relation("eventToEventType")
-
-  @@index([id])
-  @@index([name])
-  @@index([level])
-}
-
-model Event {
-  id          Int       @id @default(autoincrement())
-  eventTypeId Int
-  cameraId    Int
-  zoneId      Int?
-  notified    Boolean   @default(false)
-  startedAt   DateTime  @db.Timestamptz()
-  endedAt     DateTime  @db.Timestamptz()
-  createdAt   DateTime  @default(now()) @db.Timestamptz()
-  updatedAt   DateTime  @updatedAt @db.Timestamptz()
-  eventType   EventType @relation("eventToEventType", fields: [eventTypeId], references: [id], onDelete: Cascade)
-  camera      Camera    @relation("eventToCamera", fields: [cameraId], references: [id], onDelete: Cascade)
-  zone        Zone?     @relation("eventToZone", fields: [zoneId], references: [id], onDelete: Cascade)
-  objects     Object[]
-  image       Image?
-
-  @@index([id])
-  @@index([eventTypeId])
-  @@index([cameraId])
-  @@index([zoneId])
-  @@index([notified])
-  @@index([startedAt])
-  @@index([endedAt])
-}
-
-model Object {
-  id              String      @id @db.Uuid
-  cameraId        Int
-  name            String
-  firstAppearance DateTime    @db.Timestamptz()
-  lastAppearance  DateTime    @db.Timestamptz()
-  createdAt       DateTime    @default(now()) @db.Timestamptz()
-  updatedAt       DateTime    @updatedAt @db.Timestamptz()
-  camera          Camera      @relation("objectToCamera", fields: [cameraId], references: [id], onDelete: Cascade)
-  events          Event[]
-  detections      Detection[] @relation("detectionToObject")
-
-  @@index([id])
-  @@index([cameraId])
-  @@index([name])
-}
-
-model Detection {
-  id         Int      @id @default(autoincrement())
-  objectId   String   @db.Uuid
-  x          Float
-  y          Float
-  w          Float
-  h          Float
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model detection {
+  id         Int         @id @default(autoincrement())
+  frame_id   Int
+  track_id   Int
+  model_id   String      @db.VarChar
+  area_id    Int
+  cls        String      @db.VarChar
+  bbox       Float[]
   confidence Float
-  keypoints  Json?
-  posture    String?
-  timestamp  DateTime @db.Timestamptz()
-  createdAt  DateTime @default(now()) @db.Timestamptz()
-  updatedAt  DateTime @updatedAt @db.Timestamptz()
-  object     Object   @relation("detectionToObject", fields: [objectId], references: [id], onDelete: Cascade)
-
-  @@index([id])
-  @@index([objectId])
+  img_area   img_area    @relation(fields: [area_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  frame      frame       @relation(fields: [frame_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  model      model       @relation(fields: [model_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  // keypoints  keypoints[]
+  seg_point  seg_point[]
 }
 
-model Image {
-  id         Int      @id @default(autoincrement())
-  eventId    Int      @unique
-  url        String
-  detections Json
-  createdAt  DateTime @default(now()) @db.Timestamptz()
-  updatedAt  DateTime @updatedAt @db.Timestamptz()
+model frame {
+  id        Int         @id @default(autoincrement())
+  camera_id String      @db.VarChar
+  timestamp DateTime    @default(now()) @db.Timestamptz(6)
+  detection detection[]
+  camera    camera      @relation(fields: [camera_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
 
-  event Event @relation(fields: [eventId], onDelete: Cascade, references: [id])
+model img_area {
+  id         Int          @id @default(autoincrement())
+  camera_id  String       @db.VarChar
+  model_id   String       @db.VarChar
+  name       String       @db.VarChar
+  area_point area_point[]
+  detection  detection[]
+  model_cfg  model_cfg    @relation(fields: [camera_id, model_id], references: [camera_id, model_id], onDelete: NoAction, onUpdate: NoAction)
 
-  @@index([id])
-  @@index([eventId])
+  @@unique([camera_id, model_id, name], map: "unique_area")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model keypoints {
+  detection_id Int
+  keypoints1   Float[]
+  keypoints2   Float[]
+  keypoints3   Float[]
+  keypoints4   Float[]
+  keypoints5   Float[]
+  keypoints6   Float[]
+  keypoints7   Float[]
+  keypoints8   Float[]
+  keypoints9   Float[]
+  keypoints10  Float[]
+  keypoints11  Float[]
+  keypoints12  Float[]
+  keypoints13  Float[]
+  keypoints14  Float[]
+  keypoints15  Float[]
+  keypoints16  Float[]
+  keypoints17  Float[]
+  // detection    detection @relation(fields: [detection_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([detection_id, keypoints1, keypoints2, keypoints3, keypoints4, keypoints5, keypoints6, keypoints7, keypoints8, keypoints9, keypoints10, keypoints11, keypoints12, keypoints13, keypoints14, keypoints15, keypoints16, keypoints17], map: "unique_keypoints")
+  @@ignore
+}
+
+model model {
+  id        String      @id @db.VarChar
+  detection detection[]
+  model_cfg model_cfg[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model model_cfg {
+  camera_id       String     @db.VarChar
+  model_id        String     @db.VarChar
+  iou_check       Float
+  min_det_conf    Float
+  min_dets_needed Int        @default(0)
+  // count           count[]
+  img_area        img_area[]
+  camera          camera     @relation(fields: [camera_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  model           model      @relation(fields: [model_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([camera_id, model_id])
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model operating_time {
+  status    String   @db.VarChar(3)
+  timestamp DateTime @default(now()) @db.Timestamp(6)
+
+  @@ignore
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model seg_point {
+  detection_id Int
+  ord          Int
+  x            Float
+  y            Float
+  detection    detection @relation(fields: [detection_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([detection_id, ord])
+  @@unique([detection_id, x, y], map: "unique_seg_point")
+}
+
+model zone {
+  id     Int      @id @default(autoincrement())
+  name   String   @unique @db.VarChar
+  camera camera[]
 }

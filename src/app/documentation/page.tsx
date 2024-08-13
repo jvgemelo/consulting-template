@@ -1,40 +1,32 @@
 'use client'
-import { Box, Divider, Heading } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { supabase } from '../utils/supabase/client';
 
 export default function DocumentationPage() {
-  const [data, setData] = useState(null);
-  useEffect(() => {
-    const fetchData = async () => {
-      const { data, error } = await supabase
-        .from('personas')
-        .select('*');
+  const [cameras, setCameras] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-      if (error) {
-        console.error('Error fetching data:', error);
-      } else {
-        console.log("Dataa", data)
-        setData(data);
-      }
+  useEffect(() => {
+    // Llamar a la API para obtener los datos de las cámaras
+    const fetchCameras = async () => {
+      const response = await fetch('/api/cameras');
+      const data = await response.json();
+      setCameras(data);
+      setLoading(false);
     };
-    
-    fetchData();
+
+    fetchCameras();
   }, []);
+
+  if (loading) return <p>Loading...</p>;
+
   return (
-    <Box p={8}>
-      <Heading>Documentation</Heading>
-      <Divider className='m-4'/>
-      <p>This is the documentation page.</p>
-      {data ? (
-        <ul>
-          {data.map((item) => (
-            <div key={item.id}>{item.nombre}</div>
-          ))}
-        </ul>
-      ) : (
-        <div>Loading...</div>
-      )}
-    </Box>
+    <div>
+      <h1>Lista de Cámaras</h1>
+      <ul>
+        {cameras.map((camera) => (
+          <li key={camera.id}>{camera.name} - {camera.url}</li>
+        ))}
+      </ul>
+    </div>
   );
 }

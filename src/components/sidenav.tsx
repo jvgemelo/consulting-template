@@ -16,8 +16,10 @@ const SideNav = () => {
     { name: 'Settings', icon: FiSettings, path: '/settings' },
   ];
 
-  const handleNavigation = useCallback((path) => {
-    if (router.pathname !== path) {
+ 
+  const handleNavigation = useCallback((path: string) => {
+    const pathName = (router as any).pathname; // Uso de `any` para eludir temporalmente los errores de tipo
+    if (pathName !== path) {
       router.push(path);
     }
   }, [router]);
@@ -35,6 +37,7 @@ const SideNav = () => {
       h="100vh"
       p={5}
       boxShadow="md"
+      // backgroundColor={'lightgray'}
     >
       <VStack spacing={4} align="stretch" flex="1">
         {menuItems.map((item) => (
