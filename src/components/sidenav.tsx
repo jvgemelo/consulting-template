@@ -37,7 +37,7 @@ const SideNav = () => {
       h="100vh"
       p={5}
       boxShadow="md"
-      // backgroundColor={'lightgray'}
+      backgroundColor={'lightgray'}
     >
       <VStack spacing={4} align="stretch" flex="1">
         {menuItems.map((item) => (

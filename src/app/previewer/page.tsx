@@ -85,7 +85,7 @@ export default function PreviewerPage() {
   if (cameraData.length === 0) return <div>Loading...</div>;
 
   return (
-    <Box p={8}>
+    <Box p={8} >
       <Heading>Previewer</Heading>
       <Divider className='m-4' />
       <Menu>
@@ -103,7 +103,7 @@ export default function PreviewerPage() {
       <Divider className='m-4' />
       {/* <CameraCard/> */}
       <div>
-      <Box p={8} w={1200}>
+      <Box p={8} w="auto" h={700} overflowY="auto">
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
         {cameraData.map(({ cameraName, imageUrl }) => (
           <Box key={cameraName} borderWidth="1px" borderRadius="lg" overflow="hidden" p={4}>
