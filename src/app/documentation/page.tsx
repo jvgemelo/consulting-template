@@ -1,6 +1,8 @@
 'use client'
 import { useEffect, useState } from 'react';
-
+import {
+  Box
+} from '@chakra-ui/react';
 export default function DocumentationPage() {
   const [cameras, setCameras] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -20,13 +22,13 @@ export default function DocumentationPage() {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div>
+    <Box p={8} ml="250px" w="100% - 250px" overflowY="auto">
       <h1>Lista de Cámaras</h1>
       <ul>
         {cameras.map((camera) => (
           <li key={camera.id}>Nombre de camara: {camera.name} <br/> Camara Url:  {camera.url}</li>
         ))}
       </ul>
-    </div>
+    </Box>
   );
 }
