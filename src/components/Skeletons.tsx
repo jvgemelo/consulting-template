@@ -1,3 +1,5 @@
+import { Box, Divider, HStack, SimpleGrid, Skeleton, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
+
 // Loading animation
 const shimmer =
   'before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/60 before:to-transparent';
@@ -99,6 +101,18 @@ export default function DashboardSkeleton() {
         <LatestInvoicesSkeleton />
       </div>
     </>
+  );
+}
+export function PreviewerSkeleton() {
+  return (
+    <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
+      {Array(4).fill("").map((_, index) => (
+        <Box key={index} borderWidth="1px" borderRadius="lg" overflow="hidden" p={4} width="100%">
+          <Skeleton height="400px" width="full" />
+        </Box>
+      ))}
+    </SimpleGrid>
+
   );
 }
 
