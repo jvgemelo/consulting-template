@@ -38,9 +38,9 @@ model count {
   timestamp DateTime  @default(now()) @db.Timestamptz(6)
   camera_id String    @db.VarChar
   model_id  String    @db.VarChar
-  // model_cfg model_cfg @relation(fields: [camera_id, model_id], references: [camera_id, model_id], onDelete: NoAction, onUpdate: NoAction)
+  model_cfg model_cfg @relation(fields: [camera_id, model_id], references: [camera_id, model_id], onDelete: NoAction, onUpdate: NoAction)
 
-  @@ignore
+  @@id([camera_id, model_id, timestamp]) // Clave primaria compuesta con camera_id, model_id y timestamp
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
@@ -56,7 +56,7 @@ model detection {
   img_area   img_area    @relation(fields: [area_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   frame      frame       @relation(fields: [frame_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   model      model       @relation(fields: [model_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  // keypoints  keypoints[]
+  keypoints  keypoints[]
   seg_point  seg_point[]
 }
 
@@ -82,6 +82,7 @@ model img_area {
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model keypoints {
+  id          Int      @id @default(autoincrement())
   detection_id Int
   keypoints1   Float[]
   keypoints2   Float[]
@@ -100,10 +101,10 @@ model keypoints {
   keypoints15  Float[]
   keypoints16  Float[]
   keypoints17  Float[]
-  // detection    detection @relation(fields: [detection_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  detection    detection @relation(fields: [detection_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@unique([detection_id, keypoints1, keypoints2, keypoints3, keypoints4, keypoints5, keypoints6, keypoints7, keypoints8, keypoints9, keypoints10, keypoints11, keypoints12, keypoints13, keypoints14, keypoints15, keypoints16, keypoints17], map: "unique_keypoints")
-  @@ignore
+
 }
 
 model model {
@@ -119,7 +120,7 @@ model model_cfg {
   iou_check       Float
   min_det_conf    Float
   min_dets_needed Int        @default(0)
-  // count           count[]
+  count           count[]
   img_area        img_area[]
   camera          camera     @relation(fields: [camera_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   model           model      @relation(fields: [model_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -130,10 +131,10 @@ model model_cfg {
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model operating_time {
+  id         Int      @id @default(autoincrement())
   status    String   @db.VarChar(3)
   timestamp DateTime @default(now()) @db.Timestamp(6)
 
-  @@ignore
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.

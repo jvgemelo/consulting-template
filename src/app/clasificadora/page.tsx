@@ -5,7 +5,7 @@ import TwoLevelPieChart from '@/components/TwoLevelPieChart';
 import { Suspense } from 'react';
 import { RevenueChartSkeleton } from '@/components/Skeletons';
 
-export default function StadisticsPage() {
+export default function Clasificadora() {
   return (
     <Box p={8} ml="250px" w="100% - 250px" overflowY="auto">
       <Heading>Statistics</Heading>

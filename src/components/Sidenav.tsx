@@ -1,7 +1,8 @@
 // components/SideNav.js
 'use client';
 import { Box, Flex, Icon, Link, Text, VStack, Spacer } from '@chakra-ui/react';
-import { FiHome, FiUser, FiSettings, FiLogOut, FiFileText, FiEye, FiBook, FiBarChart } from 'react-icons/fi';
+import { FiHome, FiUser, FiSettings, FiLogOut, FiFileText, FiEye, FiBook, FiBarChart} from 'react-icons/fi';
+import { FaArrowRotateRight } from "react-icons/fa6";
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 import Image from 'next/image';
@@ -10,10 +11,10 @@ const SideNav = () => {
   const router = useRouter();
 
   const menuItems = [
-    { name: 'Previewer', icon: FiEye, path: '/previewer' },
-    { name: 'Statistics', icon: FiBarChart, path: '/statistics' },
-    { name: 'View', icon: FiUser, path: '/view' },
-    { name: 'Documentation', icon: FiBook, path: '/documentation' },
+    { name: 'Giro', icon: FaArrowRotateRight, path: '/giro' },
+    { name: 'Clasificadora', icon: FiBarChart, path: '/clasificadora' },
+    { name: 'Productividad', icon: FiUser, path: '/productividad' },
+    // { name: 'Documentation', icon: FiBook, path: '/documentation' },
     // { name: 'Settings', icon: FiSettings, path: '/settings' },
   ];
 

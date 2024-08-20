@@ -22,7 +22,7 @@ import { Suspense, useEffect, useState } from 'react';
 import { IoChevronDownCircleOutline } from 'react-icons/io5';
 
 
-export default function PreviewerPage() {
+export default function Giro() {
   const [cameras, setCameras] = useState({});
   const [cameraData, setCameraData] = useState([]);
   const [error, setError] = useState(null);

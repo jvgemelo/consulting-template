@@ -3,7 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ChakraProvider } from "@chakra-ui/react";
 import SideNav from "@/components/Sidenav";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+const queryClient = new QueryClient()
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -23,7 +25,9 @@ export default function RootLayout({
           <div style={{ display: 'flex', minHeight: 'screen' }}>
             <SideNav />
             <main style={{ flex: 1 }}>
-              {children}
+              {/* <QueryClientProvider client={queryClient}> */}
+                {children}
+              {/* </QueryClientProvider> */}
             </main>
           </div>
         </ChakraProvider>
