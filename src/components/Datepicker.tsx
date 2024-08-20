@@ -14,18 +14,15 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { getMazoRecords } from "@/actions/data"
+import { useMazo } from "@/context/giro-context"
 
 export function DatePickerWithRange({
   className,
 }: React.HTMLAttributes<HTMLDivElement>) {
-  const [date, setDate] = React.useState<DateRange | undefined>({
-    from: addDays(new Date(), -5),
-    to: new Date(),
-  })
- 
-  const [mazos, setMazos] = React.useState([]) // Estado para almacenar los registros de mazo
-  const [loading, setLoading] = React.useState(true) // Estado para manejar el loading
-
+  
+  const { date, setDate, mazos, setMazos } = useMazo();
+  const [loading, setLoading] = React.useState(true);
+  
   React.useEffect(() => {
     if (date?.from && date?.to) {
       setLoading(true) // Inicia el loading antes de la llamada a la API

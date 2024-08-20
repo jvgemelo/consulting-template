@@ -4,6 +4,7 @@ import "./globals.css";
 import { ChakraProvider } from "@chakra-ui/react";
 import SideNav from "@/components/Sidenav";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { MazoProvider } from "@/context/giro-context";
 
 const queryClient = new QueryClient()
 const inter = Inter({ subsets: ["latin"] });
@@ -21,6 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+      <MazoProvider>
         <ChakraProvider>
           <div style={{ display: 'flex', minHeight: 'screen' }}>
             <SideNav />
@@ -31,6 +33,7 @@ export default function RootLayout({
             </main>
           </div>
         </ChakraProvider>
+        </MazoProvider>
       </body>
     </html>
   );

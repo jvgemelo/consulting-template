@@ -1,8 +1,8 @@
 'use client'
 import CameraCard from '@/components/CameraGrid'
+import { DatePickerWithRange } from '@/components/Datepicker';
 import { PreviewerSkeleton } from '@/components/Skeletons';
 import StackedBarChart from '@/components/StackedBarChart';
-import { DatePickerDemo, DatePickerWithRange } from '@/components/ui/datepicker';
 import {
   Box, Divider, Heading, Menu,
   MenuButton,
