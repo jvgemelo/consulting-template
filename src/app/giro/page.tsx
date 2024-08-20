@@ -2,6 +2,7 @@
 import CameraCard from '@/components/CameraGrid'
 import { PreviewerSkeleton } from '@/components/Skeletons';
 import StackedBarChart from '@/components/StackedBarChart';
+import { DatePickerDemo, DatePickerWithRange } from '@/components/ui/datepicker';
 import {
   Box, Divider, Heading, Menu,
   MenuButton,
@@ -146,7 +147,9 @@ export default function Giro() {
         </div>
         <Divider className='m-4' />
         <Heading>Gráficas</Heading>
+        <DatePickerWithRange/>
         <Divider className='m-4' />
+        
         <StackedBarChart/>
         
       </Box>

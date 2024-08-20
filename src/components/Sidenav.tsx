@@ -14,7 +14,7 @@ const SideNav = () => {
     { name: 'Giro', icon: FaArrowRotateRight, path: '/giro' },
     { name: 'Clasificadora', icon: FiBarChart, path: '/clasificadora' },
     { name: 'Productividad', icon: FiUser, path: '/productividad' },
-    // { name: 'Documentation', icon: FiBook, path: '/documentation' },
+    { name: 'Documentation', icon: FiBook, path: '/documentation' },
     // { name: 'Settings', icon: FiSettings, path: '/settings' },
   ];
 
