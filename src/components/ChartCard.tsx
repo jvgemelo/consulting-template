@@ -9,7 +9,7 @@ const ChartCard = ({ title, description, children }) => {
       boxShadow="lg"
       bg="white"
       p={6}
-      mb={6}
+      m={6}
       height={"90%"} width={"90%"}
     //   background={"white"}
     >

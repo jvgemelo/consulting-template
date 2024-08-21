@@ -8,26 +8,17 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  Legend,
+  Label,
 } from 'recharts';
 import ChartCard from './ChartCard';
 
-
-const data = [
-  { name: 'Jan', uv: 4000 },
-  { name: 'Feb', uv: 3000 },
-  { name: 'Mar', uv: 2000 },
-  { name: 'Apr', uv: 2780 },
-  { name: 'May', uv: 1890 },
-  { name: 'Jun', uv: 2390 },
-  { name: 'Jul', uv: 3490 },
-  { name: 'Aug', uv: 2000 },
-];
 
 function SimpleAreaChart() {
   const { personas } = useMazo();
   function formatDates(array) {
     return array.map(item => {
-      const formattedDate = item.timestamp.toLocaleDateString('en-GB'); 
+      const formattedDate = item.timestamp.toLocaleDateString('en-GB');
       return {
         ...item,
         timestamp: formattedDate
@@ -36,18 +27,40 @@ function SimpleAreaChart() {
   }
   return (
     <ChartCard title="Personas en área de máquina giro" description="Detecciones de personas a lo largo del tiempo en el área de la máquina giro.">
-    <ResponsiveContainer width="100%" height={500}>
-      <AreaChart
-        data={formatDates(personas)}
-        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="timestamp" />
-        <YAxis />
-        <Tooltip />
-        <Area type="monotone" dataKey="total" stroke="#8884d8" fill="#8884d8" />
-      </AreaChart>
-    </ResponsiveContainer>
+      <ResponsiveContainer width="100%" height={500}>
+        <AreaChart
+          data={formatDates(personas)}
+          margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="timestamp" fontSize="12px">
+            <Label value="Tiempo" offset={0} position="bottom" fontSize="13px" dy={-7} />
+          </XAxis>
+          <YAxis fontSize="12px">
+            <Label
+              value="Personas"
+              offset={-20}
+              position="insideTopLeft"
+              fontSize="13px"
+              angle={-90}
+              dx={30}
+              dy={250}
+            />
+          </YAxis>
+          <Tooltip />
+          <Legend
+            align="right"
+            verticalAlign="top"
+            wrapperStyle={{
+              left: "50%",
+              transform: "translateX(-50%)",
+              top: -20,
+              fontSize: "13px",
+            }}
+          />
+          <Area type="monotone" dataKey="total" stroke="#f28e2c" fill="#f28e2c" />
+        </AreaChart>
+      </ResponsiveContainer>
     </ChartCard>
 
   );
