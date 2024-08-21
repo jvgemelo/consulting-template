@@ -68,7 +68,7 @@ export default function Giro() {
       try {
         // Itera sobre las cámaras y realiza peticiones de manera secuencial
         for (const [cameraName] of Object.entries(cameras)) {
-          const response = await fetch(`http://172.24.126.175/get_image?camera_name=${cameraName}&processed=true&font_size=1&show_confidence=true&show_id=true&show_speed=true&show_position=true&show_estela=true&show_keypoints=true&show_contours=true&show_only_segmentation=false`, {
+          const response = await fetch(`http://172.24.126.175:3000/get_image?camera_name=${cameraName}&processed=true&font_size=1&show_confidence=true&show_id=true&show_speed=true&show_position=true&show_estela=true&show_keypoints=true&show_contours=true&show_only_segmentation=false`, {
             method: 'GET',
             headers: {
               'Accept': 'image/jpeg',
