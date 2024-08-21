@@ -13,14 +13,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { getMazoRecords } from "@/actions/data"
+import { getMazoRecords, getPersonRecords } from "@/actions/data"
 import { useMazo } from "@/context/giro-context"
 
 export function DatePickerWithRange({
   className,
 }: React.HTMLAttributes<HTMLDivElement>) {
   
-  const { date, setDate, mazos, setMazos } = useMazo();
+  const { date, setDate, mazos, setMazos, personas, setPersonas } = useMazo();
   const [loading, setLoading] = React.useState(true);
   
   React.useEffect(() => {
@@ -40,7 +40,31 @@ export function DatePickerWithRange({
           // Convertir el objeto en un array
           const finalRecords = Object.values(filteredRecords)
 
+
           setMazos(finalRecords) // Guarda los registros filtrados en el estado
+          setLoading(false) // Termina el loading después de la llamada a la API
+        })
+        .catch((error) => {
+          console.error("Error fetching mazo records:", error)
+          setLoading(false) // Asegura que el loading termine en caso de error
+        })
+        setLoading(true)
+        getPersonRecords(date.from, date.to)
+        .then((records) => {
+          // Filtrar los registros para obtener solo el último total de cada día
+          const filteredRecords = records.reduce((acc, record) => {
+            const recordDate = format(new Date(record.timestamp), 'yyyy-MM-dd')
+            if (!acc[recordDate] || new Date(record.timestamp) > new Date(acc[recordDate].timestamp)) {
+              acc[recordDate] = record
+            }
+            return acc
+          }, {})
+          
+          // Convertir el objeto en un array
+          const finalRecords = Object.values(filteredRecords)
+
+          
+          setPersonas(finalRecords) // Guarda los registros filtrados en el estado
           setLoading(false) // Termina el loading después de la llamada a la API
         })
         .catch((error) => {
@@ -50,8 +74,8 @@ export function DatePickerWithRange({
     }
   }, [date]) // Dependencia en el rango de fechas
 
-  console.log("Date range", date)
-  console.log("MAZOS", mazos)
+  // console.log("Date range", date)
+  // console.log("MAZOS", mazos)
   return (
     <div className={cn("grid gap-2", className)}>
       <Popover>

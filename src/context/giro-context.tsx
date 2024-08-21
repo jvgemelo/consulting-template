@@ -9,6 +9,8 @@ const MazoContext = createContext({
     setDate: () => {},
     mazos: [],
     setMazos: () => {},
+    personas: [],
+    setPersonas: () => {},
   });
 
 export function useMazo() {
@@ -22,13 +24,16 @@ export function MazoProvider({ children }) {
       })
 //   const [date, setDate] = useState(null);
   const [mazos, setMazos] = useState([]);
+  const [personas, setPersonas] = useState([]);
 
   return (
     <MazoContext.Provider value={{ 
         date,
         setDate,
         mazos,
-        setMazos
+        setMazos,
+        personas,
+        setPersonas
          }}>
       {children}
     </MazoContext.Provider>

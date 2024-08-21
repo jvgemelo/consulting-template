@@ -71,3 +71,28 @@ export const getMazoRecords = async (startDatetime: Date, endDatetime: Date) => 
         throw new Error("Failed to fetch the last event")
     }
 }
+
+export const getPersonRecords = async (startDatetime: Date, endDatetime: Date) => {
+    try {
+        const records = await prisma.count.findMany({
+            where: {
+                object: 'person',
+                timestamp: {
+                    gte: startDatetime,  // Greater than or equal to startDatetime
+                    lte: endDatetime,    // Less than or equal to endDatetime
+                },
+            },
+            select: {
+                timestamp: true,
+                total: true,
+            },
+            orderBy: {
+                timestamp: 'asc',
+            },
+        })
+        return records;
+    } catch (error) {
+        console.error("Error fetching the camera;", error)
+        throw new Error("Failed to fetch the last event")
+    }
+}

@@ -11,10 +11,10 @@ const SideNav = () => {
   const router = useRouter();
 
   const menuItems = [
-    { name: 'Giro', icon: FaArrowRotateRight, path: '/giro' },
-    { name: 'Clasificadora', icon: FiBarChart, path: '/clasificadora' },
-    { name: 'Productividad', icon: FiUser, path: '/productividad' },
-    { name: 'Documentation', icon: FiBook, path: '/documentation' },
+    { name: 'Visor', icon: FiEye, path: '/visor' },
+    { name: 'Estadísticas', icon: FiBarChart, path: '/estadisticas' },
+    { name: 'View', icon: FiUser, path: '/view' },
+    { name: 'Documentacion', icon: FiBook, path: '/documentacion' },
     // { name: 'Settings', icon: FiSettings, path: '/settings' },
   ];
 
