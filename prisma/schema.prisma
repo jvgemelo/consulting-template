@@ -1,12 +1,23 @@
 generator client {
   provider = "prisma-client-js"
 }
+// Generador de clientes para la segunda base de datos
+// generator clientDb2 {
+//   provider = "prisma-client-js"
+//   output   = "./prisma-client-db2" // Directorio de salida para el cliente
+//   datasource = "db2"
+// }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
+// Segunda base de datos
+// datasource db2 {
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL_2") // URL de la segunda base de datos
+// }
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model area_point {
   area_id  Int

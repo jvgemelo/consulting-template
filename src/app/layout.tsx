@@ -26,7 +26,14 @@ export default function RootLayout({
         <ChakraProvider>
           <div style={{ display: 'flex', minHeight: 'screen' }}>
             <SideNav />
-            <main style={{ flex: 1 }}>
+            <main 
+            style={{ 
+              flex: 1, 
+              // backgroundColor: '#d7ddd3', 
+              minHeight: '100vh',
+              width: '100%'
+            }} 
+          >
               {/* <QueryClientProvider client={queryClient}> */}
                 {children}
               {/* </QueryClientProvider> */}

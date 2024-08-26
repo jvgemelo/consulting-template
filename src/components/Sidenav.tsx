@@ -1,7 +1,7 @@
 // components/SideNav.js
 'use client';
 import { Box, Flex, Icon, Link, Text, VStack, Spacer } from '@chakra-ui/react';
-import { FiHome, FiUser, FiSettings, FiLogOut, FiFileText, FiEye, FiBook, FiBarChart} from 'react-icons/fi';
+import { FiHome, FiUser, FiSettings, FiLogOut, FiFileText, FiEye, FiBook, FiBarChart } from 'react-icons/fi';
 import { FaArrowRotateRight } from "react-icons/fa6";
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
@@ -18,7 +18,7 @@ const SideNav = () => {
     // { name: 'Settings', icon: FiSettings, path: '/settings' },
   ];
 
- 
+
   const handleNavigation = useCallback((path: string) => {
     const pathName = (router as any).pathname; // Uso de `any` para eludir temporalmente los errores de tipo
     if (pathName !== path) {
@@ -39,17 +39,23 @@ const SideNav = () => {
       h="100vh"
       p={5}
       boxShadow="md"
-      backgroundColor={'lightgray'}
+      // backgroundColor={'lightgray'}
       position="fixed"
       top="0"
     >
+      {/* Logo de impero del sidenav*/}
+      <div className="logo-container mb-8">
+        <img src="/imperio.png" alt="Imperio Logo" className="logo w-32 h-auto mx-auto" />
+        {/* <img src="/Siali.png" alt="Imperio Logo" className="logo w-32 h-auto mx-auto" /> */}
+
+      </div>
       <VStack spacing={4} align="stretch" flex="1">
         {menuItems.map((item) => (
           <Link
             key={item.name}
             as="button"
             onClick={() => handleNavigation(item.path)}
-            _hover={{ textDecor: 'none', bg: 'gray.100' }}
+            _hover={{ textDecor: 'none', bg: '#ECC061' }}
             p={3}
             borderRadius="md"
             display="flex"
@@ -60,8 +66,8 @@ const SideNav = () => {
           </Link>
         ))}
         <Box className=' w-full h-full rounded-3xl border-2 ' display="flex" justifyContent="center" alignItems="center">
-        <Box width="150px" mx="auto" >
-        {/* <Image 
+          <Box width="150px" mx="auto" >
+            {/* <Image 
           src='/Siali.png' 
           alt='Siali logo' 
           height={150} 
@@ -70,7 +76,7 @@ const SideNav = () => {
           objectFit="contain" 
           objectPosition="center"
         /> */}
-      </Box>
+          </Box>
         </Box>
         <Spacer />
         {/* <Box>
@@ -87,30 +93,32 @@ const SideNav = () => {
             <Text fontSize="medium">Logout</Text>
           </Box>
         </Box> */}
+
+
         <Link
-            as="button"
-            onClick={() => handleNavigation("/settings")}
-            _hover={{ textDecor: 'none', bg: 'gray.100' }}
-            p={3}
-            borderRadius="md"
-            display="flex"
-            alignItems="center"
-          >
-            <Icon as={FiSettings} boxSize={6} mr={3} />
-            <Text fontSize="medium">Settings</Text>
-          </Link>
-          <Link
-            as="button"
-            onClick={() => handleNavigation("/")}
-            _hover={{ textDecor: 'none', bg: 'gray.100' }}
-            p={3}
-            borderRadius="md"
-            display="flex"
-            alignItems="center"
-          >
-            <Icon as={FiLogOut} boxSize={6} mr={3} />
-            <Text fontSize="medium">Logout</Text>
-          </Link>
+          as="button"
+          onClick={() => handleNavigation("/settings")}
+          _hover={{ textDecor: 'none', bg: '#ECC061' }}
+          p={3}
+          borderRadius="md"
+          display="flex"
+          alignItems="center"
+        >
+          <Icon as={FiSettings} boxSize={6} mr={3} />
+          <Text fontSize="medium">Settings</Text>
+        </Link>
+        <Link
+          as="button"
+          onClick={() => handleNavigation("/")}
+          _hover={{ textDecor: 'none', bg: '#ECC061' }}
+          p={3}
+          borderRadius="md"
+          display="flex"
+          alignItems="center"
+        >
+          <Icon as={FiLogOut} boxSize={6} mr={3} />
+          <Text fontSize="medium">Logout</Text>
+        </Link>
       </VStack>
     </Flex>
   );

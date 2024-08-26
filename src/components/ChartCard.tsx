@@ -1,7 +1,13 @@
 import React from 'react';
 import { Box, Heading, Text } from '@chakra-ui/react';
 
-const ChartCard = ({ title, description, children }) => {
+interface ChartCard {
+  title: string,
+  description: string,
+  children: any
+
+}
+const ChartCard = ({ title, description, children }: ChartCard) => {
   return (
     <Box
       borderRadius="lg"

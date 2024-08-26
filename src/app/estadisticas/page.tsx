@@ -7,10 +7,10 @@ import { DatePickerWithRange } from '@/components/Datepicker';
 import SimpleAreaChart from '@/components/SimpleAreaChart';
 export default function Clasificadora() {
   return (
-    <Box p={8} ml="250px" w="100% - 250px" overflowY="auto">
+    <Box p={8} ml="250px" w="100% - 250px" >
       <Heading>Gráficas de estadísticas</Heading>
       <Divider className='m-4' />
-      <Select placeholder='Select zone'>
+      <Select placeholder='Seleccione una zona'>
         <option value='option1'>Giro</option>
         <option value='option2'>Clasificadora</option>
         <option value='option3'>Productividad</option>

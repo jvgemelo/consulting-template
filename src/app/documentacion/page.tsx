@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react';
 import { Box } from '@chakra-ui/react';
-import { getAreaPoint, getCameraByZoneId, getCount, getZone } from '@/actions/data';
+import { getCameraByZoneId, getCount, getZone } from '@/actions/data';
 import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
 
 // Crear un nuevo QueryClient
@@ -26,7 +26,7 @@ export default function Documentation() {
     console.log("Dataa del useQuery", camera);
 
     return (
-      <Box p={8} ml="250px" w="calc(100% - 250px)" overflowY="auto">
+      <Box p={8} ml="250px" w="calc(100% - 250px)" >
         <h1>Detalles de la Cámara</h1>
         {camera ? (
           <div>
