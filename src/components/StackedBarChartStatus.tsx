@@ -4,8 +4,8 @@ import React, { PureComponent } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Label } from 'recharts';
 import ChartCard from './ChartCard';
 
-const StackedBarChart = () => {
-  const { mazos } = useMazo();
+const StackedBarChartStatus = () => {
+  const { status } = useMazo();
   function formatDates(array: any[]) {
     return array.map(item => {
       const formattedDate = item.timestamp.toLocaleDateString('en-GB');
@@ -15,11 +15,10 @@ const StackedBarChart = () => {
       };
     });
   }
-  // console.log("MAZOS DESDE CHARTS -->", mazos)
   return (
-    <ChartCard title="Mazos de ajos producidos" description="Contaje de mazos de ajos producidos a lo largo del tiempo.">
+    <ChartCard title="Status" description="Contaje de mazos de ajos producidos a lo largo del tiempo.">
       <ResponsiveContainer width="100%" height={480}>
-        <BarChart data={formatDates(mazos)} margin={{ top: 20, right: 30, left: 20, bottom: 25 }}>
+        <BarChart data={formatDates(status)} margin={{ top: 20, right: 30, left: 20, bottom: 25 }}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="timestamp" fontSize="12px">
             <Label value="Tiempo" offset={0} position="bottom" fontSize="13px" dy={-7} />
@@ -56,4 +55,4 @@ const StackedBarChart = () => {
   );
 };
 
-export default StackedBarChart;
+export default StackedBarChartStatus;

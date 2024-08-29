@@ -142,7 +142,7 @@ model model_cfg {
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model operating_time {
-  id         Int      @id @default(autoincrement())
+  id         Int     @id @default(autoincrement())
   status    String   @db.VarChar(3)
   timestamp DateTime @default(now()) @db.Timestamp(6)
 
