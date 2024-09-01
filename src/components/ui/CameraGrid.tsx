@@ -11,7 +11,7 @@ const CameraGrid = () => {
                 alignItems="center"
                 justifyContent="center"
                 width="80%"
-                height="70vh"
+                height="60vh"
                 maxWidth="100%"
                 overflow="hidden"
                 // backgroundColor={"slategray"}
