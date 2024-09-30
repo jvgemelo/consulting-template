@@ -1,4 +1,4 @@
-import CameraCard from '@/components/ui/CameraGrid'
+import CameraCard from '@/components/ui/CameraCard'
 import {
   Box, Divider, Heading, Menu,
   MenuButton,

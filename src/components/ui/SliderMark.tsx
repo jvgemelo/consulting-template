@@ -2,8 +2,8 @@ import { Box, Slider, SliderFilledTrack, SliderMark, SliderThumb, SliderTrack } 
 import { useState } from "react"
 
 export default function SliderMarkExample() {
-    const [sliderValue, setSliderValue] = useState(2.5)  // Inicia el valor en el medio (2.5)
-  
+    const [sliderValue, setSliderValue] = useState(2.5)  
+    console.log("Slider value", sliderValue)
     const labelStyles = {
       mt: '2',
       ml: '-2.5',
